@@ -11,7 +11,6 @@ int main() {
   if (programFile.is_open()) {
     while (std::getline(programFile, line)) {
       lines.emplace_back(line);
-      std::cout << line << std::endl;
     }
 
     interpreter::Parser parser (lines);

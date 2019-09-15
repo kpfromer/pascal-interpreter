@@ -1,6 +1,7 @@
 #include "interpreter.h"
 #include <iostream>
 #include <string>
+#include <boost/algorithm/string.hpp>
 
 bool interpreter::isDigit(const char &character) {
   return character == '0' || character == '1' || character == '2' ||
@@ -163,11 +164,14 @@ interpreter::Token interpreter::Lexer::id() {
     val += lines[line][position];
     advance();
   }
+
+  boost::algorithm::to_lower(val);
+
   // TODO: error if lowercase
-  if (val == "BEGIN")  {
+  if (val == "begin")  {
     Token token (BEGIN);
     return token;
-  } else if (val == "END") {
+  } else if (val == "end") {
     Token token (END);
     return token;
   } else {

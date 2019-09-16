@@ -307,13 +307,13 @@ interpreter::AST *interpreter::Parser::statement() {
   }
 }
 interpreter::AST *interpreter::Parser::assignmentStatement() {
-  AST* var = variable();
+  Var* var = variable();
   eat(ASSIGN);
   AST* value = expr();
   return new Assign(var, value);
 }
 
-interpreter::AST *interpreter::Parser::variable() {
+interpreter::Var *interpreter::Parser::variable() {
   Token token = lexer.getNextToken();
   if (token.type != ID) {
     throw std::invalid_argument("Invalid assignment. Variable name is not valid.");
@@ -437,7 +437,7 @@ void interpreter::PrintVisitor::visit(interpreter::NoOp &node) {
   xml += getTabs() + "<noop />\n";
 }
 
-interpreter::Assign::Assign(interpreter::AST *left, interpreter::AST *right) {
+interpreter::Assign::Assign(interpreter::Var *left, interpreter::AST *right) {
   this->left = left;
   this->right = right;
 }

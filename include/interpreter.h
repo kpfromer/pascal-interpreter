@@ -113,9 +113,10 @@ public:
 class Assign : public AST {
 
 public:
-  AST *left;
+  Var* left;
+//  AST *left;
   AST *right;
-  Assign(AST *left, AST *right);
+  Assign(Var* left, AST *right);
   ~Assign();
 
   virtual void accept(Visitor &v) override { v.visit(*this); }
@@ -186,10 +187,28 @@ public:
   // assignmentStatement : variable ASSIGN expr
   AST *assignmentStatement();
   // variable : ID
-  AST *variable();
+  Var *variable();
   AST* empty();
 
   AST *parse();
+};
+
+template<typename VisitablePtr, typename ResultType>
+class ValueGetter : public interpreter::Visitor {
+public:
+
+  ResultType GetValue(VisitablePtr n)
+  {
+    n->accept(*this); // this call fills the return value
+    return this->value;
+  }
+
+  void Return(ResultType value_)
+  {
+    value = value_;
+  }
+private:
+  ResultType value;
 };
 
 class BasicVisitor : public Visitor {
